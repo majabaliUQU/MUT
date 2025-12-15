@@ -26,7 +26,8 @@
                         'brand-dark': '#14573A',
                         'brand-light': '#B8EACB',
                         'neutral-text': '#1F2A37',
-                        'neutral-sub': '#6B7280'
+                        'neutral-sub': '#6B7280',
+                        'gov-green': '#074D31',
                     },
                     fontFamily: {
                         sans: ['IBM Plex Sans Arabic', 'sans-serif'],
@@ -62,19 +63,11 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #14573A; 
         }
-        .tab-active {
-            color: #1F2A37;
-            border-bottom-width: 3px;
-            border-color: #1B8354;
-        }
-        .tab-inactive {
-            color: #6B7280;
-            border-bottom-width: 3px;
-            border-color: transparent;
-        }
-        .tab-inactive:hover {
-            color: #1F2A37;
-            background-color: #F9FAFB;
+        
+        /* Dropdown Transitions */
+        .group:hover .group-hover\:block {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
         }
     </style>
 </head>
@@ -82,7 +75,7 @@
 
     <!-- API Configuration -->
     <script>
-        const apiKey = ""; // API Key injected by environment
+        const apiKey = ""; 
     </script>
 
     <!-- ================= Login Screen ================= -->
@@ -138,7 +131,7 @@
         
         <!-- Header -->
         <header class="sticky top-0 z-50 shadow-md bg-white">
-            <!-- Secondary Nav (Top Strip) -->
+            <!-- 1. Secondary Nav (Top Strip) -->
             <div class="bg-[#F3F4F6] border-b border-[#E5E7EB] py-2 hidden md:block">
                 <div class="container mx-auto px-4 lg:px-[80px] flex items-center justify-between text-[12px] text-[#6B7280]">
                     <!-- Right: Info -->
@@ -157,11 +150,6 @@
                             <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                             <span id="header-time"></span>
                         </span>
-                        <span class="w-px h-3 bg-gray-300"></span>
-                        <span class="flex items-center gap-1.5 hover:text-brand-primary cursor-default transition-colors">
-                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                            <span>مكة المكرمة</span>
-                        </span>
                     </div>
                     <!-- Left: Settings -->
                     <div class="flex items-center gap-4">
@@ -173,53 +161,55 @@
                 </div>
             </div>
 
-            <!-- Main Header (Tabs Navigation) -->
+            <!-- 2. Main Header (Nav with Dropdowns) -->
             <div class="bg-white border-b border-[#D2D6DB]">
                 <div class="container mx-auto px-4 lg:px-[80px] h-[80px] flex items-center justify-between">
                     
-                    <!-- Right: Brand -->
-                    <div class="flex items-center h-full gap-6">
-                        <!-- University Logo -->
-                        <div class="flex items-center gap-3">
-                            <div class="bg-brand-primary text-white p-2 rounded-lg">
-                                <i data-lucide="graduation-cap" class="w-6 h-6"></i>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="font-bold text-base leading-tight text-brand-primary">جامعة مكة للتقنية</span>
-                                <span class="text-[10px] opacity-90 text-[#384250]">Makkah University of Technology</span>
-                            </div>
+                    <!-- Right: Brand (Saudi Emblem + University) -->
+                    <div class="flex items-center h-full gap-4">
+                        <!-- Saudi Emblem (Gold/Green) -->
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full text-[#c5a45e] fill-current">
+                                <!-- Abstract Palm and Swords Representation -->
+                                <path d="M50 20 C40 30 30 30 20 40 M50 20 C60 30 70 30 80 40 M50 20 V80 M30 70 L70 50 M70 70 L30 50" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            </svg>
                         </div>
-                        <!-- Divider -->
-                        <div class="w-px h-8 bg-gray-200 hidden lg:block"></div>
-                       
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg leading-tight text-neutral-text">جامعة مكة للتقنية</span>
+                            <span class="text-[11px] opacity-80 text-neutral-sub">Makkah University of Technology</span>
+                        </div>
                     </div>
 
-                    <!-- Center: Tabs Navigation -->
-                    <nav class="hidden xl:flex items-center h-full self-stretch">
+                    <!-- Center: Navigation Tabs with Dropdowns -->
+                    <nav class="hidden xl:flex items-center h-full flex-1 justify-start mr-8">
                         <div class="flex items-center h-full gap-2" id="desktop-nav">
-                            <!-- Tabs will be injected here by JS -->
+                            <!-- Injected by JS -->
                         </div>
                     </nav>
 
-                    <!-- Left: Actions -->
-                    <div class="flex items-center gap-4">
+                    <!-- Left: Actions (Matching Image: Login - English - Search) -->
+                    <div class="flex items-center gap-6">
+                        <!-- Search -->
                         <button class="flex items-center gap-2 text-[#384250] hover:text-brand-primary transition-colors group">
                             <i data-lucide="search" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
                             <span class="hidden lg:inline text-sm font-medium">البحث</span>
                         </button>
 
-                        <div class="w-px h-6 bg-gray-200 hidden md:block"></div>
+                        <!-- English -->
+                        <button class="flex items-center gap-2 text-[#384250] hover:text-brand-primary transition-colors font-medium text-sm">
+                            <span>English</span>
+                            <i data-lucide="languages" class="w-4 h-4 text-gray-400"></i>
+                        </button>
 
-                        <button onclick="handleLogout()" class="flex items-center gap-2 text-[#384250] hover:text-[#C53030] transition-colors group" title="تسجيل الخروج">
+                        <!-- Login -->
+                        <button onclick="handleLogout()" class="flex items-center gap-2 text-[#384250] hover:text-[#C53030] transition-colors group">
+                            <span class="hidden lg:inline text-sm font-bold">تسجيل الدخول</span>
                             <div class="bg-gray-100 p-2 rounded-full group-hover:bg-red-50 transition-colors">
                                 <i data-lucide="user" class="w-5 h-5"></i>
                             </div>
-                            <div class="flex flex-col items-start hidden lg:flex">
-                                <span class="text-xs text-gray-500">مرحباً</span>
-                                <span class="text-xs font-bold text-neutral-text max-w-[100px] truncate" id="user-name-display">الطالب</span>
-                            </div>
                         </button>
 
+                        <!-- Mobile Menu Toggle -->
                         <button class="xl:hidden p-2 text-[#384250] hover:bg-gray-50 rounded-lg" onclick="toggleMobileMenu()">
                             <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
                         </button>
@@ -275,56 +265,90 @@
         </div>
 
         <!-- Footer -->
-        <footer class="bg-[#111827] text-white pt-12 pb-8 mt-12 border-t-4 border-brand-primary">
+        <footer class="bg-gov-green text-white pt-12 pb-8">
             <div class="container mx-auto px-4 lg:px-[80px]">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                    <!-- Vision -->
-                    <div class="flex flex-col items-start gap-4">
-                        <svg viewBox="0 0 200 150" class="h-16 w-auto opacity-90 hover:opacity-100 transition-opacity">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 text-right">
+                    
+                    <!-- Col 4 (Right in RTL): Related Links -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-6 text-white pb-2 border-b border-[#ffffff33] inline-block min-w-[140px]">روابط هامة</h3>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">وزارة التعليم</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">مجلس شؤون الجامعات</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">المكتبة الرقمية السعودية (SDL)</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">رؤية المملكة 2030</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">المنصة الوطنية الموحدة</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Col 3: Important Sections -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-6 text-white pb-2 border-b border-[#ffffff33] inline-block min-w-[140px]">عن الجامعة</h3>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">نبذة عن الجامعة</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">الكليات والمعاهد</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">العمادات المساندة</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">المدينة الجامعية</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">البحث العلمي والابتكار</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Col 2: Help & Support -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-6 text-white pb-2 border-b border-[#ffffff33] inline-block min-w-[140px]">الخدمات والدعم</h3>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">دليل القبول والتسجيل</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">التقويم الأكاديمي</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">الخدمات الإلكترونية (بوابة منسوبي)</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">الدعم الفني</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">الأسئلة الشائعة</a></li>
+                            <li><a href="#" class="hover:text-brand-light hover:underline transition-colors">تقديم بلاغ أو شكوى</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Col 1 (Left): Contact & Tools -->
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-white">تواصل معنا</h3>
+                        <div class="flex gap-3 mb-8">
+                            <a href="#" class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                            <a href="#" class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                            <a href="#" class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                            <a href="#" class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors"><i data-lucide="x" class="w-5 h-5"></i></a>
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-4 text-white">أدوات الإتاحة وامكانية الوصول</h3>
+                        <div class="flex gap-3 flex-wrap">
+                            <button class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors" title="تكبير النص"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
+                            <button class="w-10 h-10 bg-[#ffffff1a] rounded flex items-center justify-center hover:bg-[#ffffff33] transition-colors" title="تباين الألوان"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                            <button class="flex items-center gap-2 px-3 h-10 bg-[#ffffff1a] rounded hover:bg-[#ffffff33] transition-colors text-sm font-medium">
+                                <i data-lucide="ear" class="w-4 h-4"></i>
+                                <span>دعم لغة الاشارة الحية</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Bottom: Logo & Copyright -->
+                <div class="flex flex-col md:flex-row justify-between items-end mt-12 pt-8 border-t border-[#ffffff1a]">
+                    <!-- Vision Logo -->
+                    <div class="mb-6 md:mb-0">
+                        <svg viewBox="0 0 200 150" class="h-20 w-auto opacity-100">
                             <path fill="#fff" d="M85.5,50 c-5,0 -10,5 -10,12 c0,5 3,10 8,10 c5,0 8,-5 8,-10 c0,-7 -4,-12 -6,-12 M115,50 c-5,0 -10,5 -10,12 c0,5 3,10 8,10 c5,0 8,-5 8,-10 c0,-7 -4,-12 -6,-12 M100,20 c-40,0 -70,30 -70,70 c0,10 5,20 10,25 c5,5 15,5 20,0 c2,-2 2,-5 0,-7 c-10,-10 -15,-20 -15,-30 c0,-30 25,-55 55,-55 c30,0 55,25 55,55 c0,10 -5,20 -15,30 c-2,2 -2,5 0,7 c5,5 15,5 20,0 c5,-5 10,-15 10,-25 c0,-40 -30,-70 -70,-70" />
                             <text x="100" y="110" fill="#fff" fontSize="14" font-family="IBM Plex Sans Arabic" text-anchor="middle" font-weight="bold">رؤية VISION</text>
                             <text x="100" y="128" fill="#fff" fontSize="14" font-family="IBM Plex Sans Arabic" text-anchor="middle" font-weight="bold">2030</text>
                         </svg>
-                        <p class="text-gray-400 text-sm mt-4 leading-relaxed">
-                            تسعى جامعة مكة للتقنية إلى تحقيق الريادة في التعليم التقني والبحث العلمي بما يخدم رؤية المملكة 2030.
-                        </p>
                     </div>
-                    <!-- Quick Links -->
-                    <div>
-                        <h3 class="font-bold text-lg mb-4 text-brand-light">روابط سريعة</h3>
-                        <ul class="space-y-2 text-gray-400 text-sm">
-                            <li><a href="#" class="hover:text-white transition-colors">عن الجامعة</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">القبول والتسجيل</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">الخدمات الإلكترونية</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">المكتبة الرقمية</a></li>
-                        </ul>
-                    </div>
-                    <!-- Support -->
-                    <div>
-                        <h3 class="font-bold text-lg mb-4 text-brand-light">المساعدة والدعم</h3>
-                        <ul class="space-y-2 text-gray-400 text-sm">
-                            <li><a href="#" class="hover:text-white transition-colors">الأسئلة الشائعة</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">الدعم الفني</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">دليل الطالب</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">تواصل معنا</a></li>
-                        </ul>
-                    </div>
-                    <!-- Contact -->
-                    <div>
-                        <h3 class="font-bold text-lg mb-4 text-brand-light">تواصل معنا</h3>
-                        <div class="space-y-3 text-gray-400 text-sm">
-                            <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> مكة المكرمة، المملكة العربية السعودية</p>
-                            <p>هاتف: 920000000</p>
-                            <p>بريد: info@mut.edu.sa</p>
+                    
+                    <!-- Copyright & Policy Links -->
+                    <div class="text-left w-full md:w-auto">
+                        <p class="font-bold text-white mb-2 text-left rtl:text-left">جميع الحقوق محفوظة لجامعة مكة للتقنية © 2025</p>
+                        <div class="flex gap-4 justify-end text-sm text-gray-300">
+                            <a href="#" class="hover:text-white transition-colors">الشروط والأحكام</a>
+                            <span>|</span>
+                            <a href="#" class="hover:text-white transition-colors">سياسة الخصوصية</a>
+                            <span>|</span>
+                            <a href="#" class="hover:text-white transition-colors">ميثاق العملاء</a>
                         </div>
-                    </div>
-                </div>
-                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                    <p>جميع الحقوق محفوظة © جامعة مكة للتقنية 2024</p>
-                    <div class="flex gap-4 mt-4 md:mt-0">
-                        <a href="#" class="hover:text-white">سياسة الخصوصية</a>
-                        <a href="#" class="hover:text-white">شروط الاستخدام</a>
-                        <a href="#" class="hover:text-white">ميثاق العملاء</a>
                     </div>
                 </div>
             </div>
@@ -377,13 +401,42 @@
         let isMobileMenuOpen = false;
         let aiResponseText = '';
 
-        // --- Tabs Config ---
+        // --- Tabs Config with Submenus (Dropdowns) ---
         const tabs = [
-            { id: 'dashboard', label: 'الرئيسية' },
-            { id: 'schedule', label: 'الجدول الدراسي' },
-            { id: 'transcript', label: 'السجل الأكاديمي' },
-            { id: 'exams', label: 'الاختبارات' },
-            { id: 'services', label: 'الخدمات الإلكترونية' }, // Static example
+            { id: 'dashboard', label: 'الرئيسية', subItems: [] },
+            { 
+                id: 'schedule', 
+                label: 'الخدمات الأكاديمية', 
+                subItems: [
+                    { id: 'schedule', label: 'الجدول الدراسي' },
+                    { id: 'transcript', label: 'السجل الأكاديمي' },
+                    { id: 'exams', label: 'الاختبارات' }
+                ] 
+            },
+            { 
+                id: 'admission', 
+                label: 'القبول والتسجيل', 
+                subItems: [
+                    { id: '#', label: 'طلب قبول' },
+                    { id: '#', label: 'التقويم الجامعي' }
+                ] 
+            },
+            { 
+                id: 'students', 
+                label: 'شؤون الطلاب', 
+                subItems: [
+                    { id: '#', label: 'الأندية الطلابية' },
+                    { id: '#', label: 'المكافآت' }
+                ] 
+            },
+            { 
+                id: 'library', 
+                label: 'المكتبة الرقمية', 
+                subItems: [
+                    { id: '#', label: 'بحث في المصادر' },
+                    { id: '#', label: 'حجز قاعات المذاكرة' }
+                ] 
+            },
         ];
 
         // --- Init ---
@@ -391,6 +444,8 @@
             lucide.createIcons();
             startClock();
             document.getElementById('user-name-display').innerText = STUDENT_DATA.name.split(' ')[0];
+            renderNavigation();
+            renderContent();
         });
 
         // --- Functions ---
@@ -437,42 +492,92 @@
         }
 
         function switchTab(tabId) {
+            if (tabId === '#') return;
+
             activeTab = tabId;
             isMobileMenuOpen = false;
             document.getElementById('mobile-menu').classList.add('hidden');
             document.getElementById('mobile-menu-icon').setAttribute('data-lucide', 'menu');
             
-            // Update Breadcrumb
             const titles = {
                 dashboard: 'لوحة المعلومات',
                 schedule: 'الجدول الدراسي',
                 transcript: 'السجل الأكاديمي',
                 exams: 'الاختبارات',
-                services: 'الخدمات الإلكترونية'
             };
             document.getElementById('breadcrumb-current').innerText = titles[tabId] || titles.dashboard;
 
-            renderNavigation();
+            renderNavigation(); 
             renderContent();
             lucide.createIcons();
         }
 
         function renderNavigation() {
-            // Desktop Nav
             const navContainer = document.getElementById('desktop-nav');
             let html = '';
+            
             tabs.forEach(tab => {
-                const isActive = activeTab === tab.id;
-                const classes = isActive 
-                    ? 'text-[#1F2A37] border-b-[3px] border-brand-primary' 
-                    : 'text-[#6B7280] hover:text-[#1F2A37] hover:bg-gray-50 border-b-[3px] border-transparent';
-                const chevron = !isActive ? '<i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-600"></i>' : '';
+                const isSelfActive = activeTab === tab.id;
+                const isChildActive = tab.subItems.some(sub => sub.id === activeTab);
+                const isActive = isSelfActive || isChildActive;
+
+                // --- STYLING LOGIC BASED ON IMAGES ---
                 
+                // Base Classes
+                // rounded-t-lg for top corners
+                // relative for positioning bottom bar
+                const baseClasses = "group relative flex items-center justify-center gap-1 px-5 h-[50px] mt-[30px] text-[15px] font-medium transition-all duration-200 cursor-pointer rounded-t-lg";
+                
+                // Active State (Green Box)
+                // bg-brand-primary, text-white
+                // Bottom bar: lighter green, rounded pill shape, small padding from sides
+                const activeClasses = isActive 
+                    ? 'bg-brand-primary text-white shadow-sm' 
+                    : 'text-[#384250] hover:bg-[#F3F4F6] hover:text-[#1F2A37]';
+                
+                // Bottom Bar HTML (Only for Active/Hover)
+                // For Active: Light Green pill
+                // For Hover: Gray pill
+                let bottomBar = '';
+                if (isActive) {
+                    bottomBar = `<div class="absolute bottom-1 left-2 right-2 h-1.5 bg-[#5CBF8E] rounded-full"></div>`;
+                } else {
+                    // Hover effect bar (Gray) - visible on group hover
+                    bottomBar = `<div class="absolute bottom-1 left-2 right-2 h-1.5 bg-[#D1D5DB] rounded-full hidden group-hover:block"></div>`;
+                }
+
+                const chevronColor = isActive ? 'text-white/80 group-hover:text-white' : 'text-gray-400 group-hover:text-gray-600';
+                
+                const chevron = tab.subItems.length > 0 
+                    ? `<i data-lucide="chevron-down" class="w-3.5 h-3.5 ${chevronColor} transition-transform group-hover:rotate-180"></i>` 
+                    : '';
+
+                let dropdownHtml = '';
+                if (tab.subItems.length > 0) {
+                    const subLinks = tab.subItems.map(sub => `
+                        <a onclick="switchTab('${sub.id}')" class="block px-4 py-3 text-sm text-gray-700 hover:bg-brand-light/20 hover:text-brand-primary cursor-pointer transition-colors ${activeTab === sub.id ? 'bg-brand-light/10 text-brand-primary font-bold' : ''}">
+                            ${sub.label}
+                        </a>
+                    `).join('');
+                    
+                    dropdownHtml = `
+                        <div class="absolute top-full right-0 w-56 bg-white border border-gray-100 shadow-xl rounded-b-lg hidden group-hover:block z-50 pt-2 animate-fade-in text-right">
+                            <div class="bg-white rounded-b-lg overflow-hidden">
+                                ${subLinks}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                const clickAction = tab.subItems.length === 0 ? `onclick="switchTab('${tab.id}')"` : '';
+
                 html += `
-                    <button onclick="switchTab('${tab.id}')" class="group relative flex items-center gap-1 px-4 h-full text-[15px] font-medium transition-colors duration-200 ${classes}">
+                    <div class="${baseClasses} ${activeClasses}" ${clickAction}>
                         ${tab.label}
                         ${chevron}
-                    </button>
+                        ${bottomBar}
+                        ${dropdownHtml}
+                    </div>
                 `;
             });
             navContainer.innerHTML = html;
@@ -480,13 +585,30 @@
             // Mobile Nav
             const mobileContainer = document.getElementById('mobile-menu');
             let mobileHtml = '';
+            
             tabs.forEach(tab => {
-                mobileHtml += `
-                    <button onclick="switchTab('${tab.id}')" class="w-full text-right px-4 py-3 hover:bg-gray-50 rounded-lg text-[#384250] font-medium">
-                        ${tab.label}
-                    </button>
-                `;
+                if (tab.subItems.length === 0) {
+                    mobileHtml += `
+                        <button onclick="switchTab('${tab.id}')" class="w-full text-right px-4 py-3 hover:bg-gray-50 rounded-lg text-[#384250] font-medium">
+                            ${tab.label}
+                        </button>
+                    `;
+                } else {
+                    const subLinks = tab.subItems.map(sub => `
+                        <button onclick="switchTab('${sub.id}')" class="w-full text-right px-8 py-2 text-sm text-gray-600 hover:text-brand-primary">
+                            - ${sub.label}
+                        </button>
+                    `).join('');
+                    
+                    mobileHtml += `
+                        <div class="space-y-1">
+                            <div class="px-4 py-3 font-medium text-[#384250] bg-gray-50 rounded-lg">${tab.label}</div>
+                            ${subLinks}
+                        </div>
+                    `;
+                }
             });
+            
             mobileHtml += `
                 <div class="border-t border-gray-100 my-2 pt-2">
                     <button onclick="handleLogout()" class="w-full text-right px-4 py-3 text-red-600 font-medium flex items-center gap-2">
@@ -495,6 +617,8 @@
                 </div>
             `;
             mobileContainer.innerHTML = mobileHtml;
+            
+            lucide.createIcons();
         }
 
         function renderContent() {
@@ -510,8 +634,19 @@
             } else if (activeTab === 'exams') {
                 container.innerHTML = renderExams();
             } else {
-                container.innerHTML = `<div class="p-8 text-center text-gray-500">صفحة قيد الإنشاء</div>`;
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
+                        <div class="bg-gray-100 p-6 rounded-full mb-4">
+                            <i data-lucide="construction" class="w-12 h-12 text-gray-400"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-700">صفحة قيد التطوير</h2>
+                        <p class="text-gray-500 mt-2">عذراً، هذه الخدمة غير متاحة حالياً في النسخة التجريبية.</p>
+                        <button onclick="switchTab('dashboard')" class="mt-6 px-6 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-dark transition-colors">
+                            العودة للرئيسية
+                        </button>
+                    </div>`;
             }
+            lucide.createIcons();
         }
 
         // --- View Renderers ---
